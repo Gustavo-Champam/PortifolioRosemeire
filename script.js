@@ -1,29 +1,48 @@
-// Utilitários
+// ==== Utilitários ====
 const $  = (s, c=document) => c.querySelector(s);
 const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
 
-// Ano no rodapé
+// ==== Ano no rodapé ====
 $("#year").textContent = new Date().getFullYear();
 
-// Menu mobile
+// ==== Menu mobile com scroll lock ====
 const nav = $(".nav");
 const toggle = $(".nav-toggle");
+
+function travarScroll(travar) {
+  document.body.style.overflow = travar ? "hidden" : "";
+}
+
 toggle?.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  const aberto = nav.classList.toggle("open");
+  toggle.setAttribute("aria-expanded", aberto ? "true" : "false");
+  travarScroll(aberto);
 });
-$$(".nav a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+$$(".nav a").forEach(a => a.addEventListener("click", () => {
+  nav.classList.remove("open");
+  toggle?.setAttribute("aria-expanded", "false");
+  travarScroll(false);
+}));
 
-// Barra de progresso
-const bar = $(".progress .bar");
+// Fecha menu ao redimensionar para desktop
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 720 && nav.classList.contains("open")) {
+    nav.classList.remove("open");
+    toggle?.setAttribute("aria-expanded", "false");
+    travarScroll(false);
+  }
+});
+
+// ==== Barra de progresso ====
+const barra = $(".progress .bar");
 document.addEventListener("scroll", () => {
-  const scrolled = window.scrollY;
-  const height = document.body.scrollHeight - window.innerHeight;
-  const pct = Math.min(100, Math.max(0, (scrolled / Math.max(1, height)) * 100));
-  bar.style.width = pct + "%";
+  const rolado = window.scrollY;
+  const altura = document.body.scrollHeight - window.innerHeight;
+  const pct = Math.min(100, Math.max(0, (rolado / Math.max(1, altura)) * 100));
+  barra.style.width = pct + "%";
 });
 
-// Reveal on scroll
+// ==== Reveal on scroll ====
 const io = new IntersectionObserver(entries => {
   for (const e of entries) {
     if (e.isIntersecting) {
@@ -34,46 +53,55 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: .12 });
 $$(".reveal").forEach(el => io.observe(el));
 
-// Smooth anchor com offset do header
+// ==== Smooth anchor com offset do header (dinâmico) ====
 document.addEventListener("click", e => {
   const a = e.target.closest('a[href^="#"]');
   if (!a) return;
+
   const id = a.getAttribute("href").slice(1);
   if (!id) return;
-  const target = document.getElementById(id);
-  if (!target) return;
+
+  const alvo = document.getElementById(id);
+  if (!alvo) return;
+
   e.preventDefault();
-  const y = target.getBoundingClientRect().top + window.scrollY - 72;
+  const header = $(".site-header");
+  const headerAltura = header ? header.getBoundingClientRect().height : 72;
+  const y = alvo.getBoundingClientRect().top + window.scrollY - (headerAltura + 14);
   window.scrollTo({ top: y, behavior: "smooth" });
 });
 
-// Botão voltar ao topo
+// ==== Botão voltar ao topo ====
 const toTop = $(".to-top");
 window.addEventListener("scroll", () => {
   toTop.classList.toggle("show", window.scrollY > 600);
 });
 
-// Tabs / filtro
+// ==== Tabs / filtro ====
 const tabs  = $$(".tab");
-const items = $$("#gallery .item");
-function applyFilter(filter){
-  items.forEach(it => {
-    const show = filter === "all" || it.dataset.category === filter;
-    it.style.display = show ? "" : "none";
+const itens = $$("#gallery .item");
+function aplicarFiltro(filtro) {
+  itens.forEach(it => {
+    const mostrar = filtro === "all" || it.dataset.category === filtro;
+    it.style.display = mostrar ? "" : "none";
   });
-  requestAnimationFrame(resizeAllMasonryItems);
-  $("#gallery").setAttribute("aria-label", `Exibindo categoria: ${filter === "all" ? "todas" : filter}`);
+  requestAnimationFrame(redimensionarTodasAsPecas);
+  $("#gallery")?.setAttribute("aria-label", `Exibindo categoria: ${filtro === "all" ? "todas" : filtro}`);
 }
 tabs.forEach(btn => btn.addEventListener("click", () => {
-  tabs.forEach(b => b.classList.remove("is-active"));
+  tabs.forEach(b => {
+    b.classList.remove("is-active");
+    b.setAttribute("aria-selected", "false");
+  });
   btn.classList.add("is-active");
-  applyFilter(btn.dataset.filter);
+  btn.setAttribute("aria-selected", "true");
+  aplicarFiltro(btn.dataset.filter);
 }));
 
-// Masonry (grid-auto-rows)
+// ==== Masonry (grid-auto-rows) ====
 const grid = $("#gallery");
-function resizeMasonryItem(item){
-  if (!item) return;
+function redimensionarItemMasonry(item) {
+  if (!item || !grid) return;
   const cs   = getComputedStyle(grid);
   const rowH = parseInt(cs.getPropertyValue("grid-auto-rows"), 10);
   const gap  = parseInt(cs.getPropertyValue("gap"), 10) || 0;
@@ -91,69 +119,78 @@ function resizeMasonryItem(item){
   const span = Math.ceil((contentH + gap) / (rowH + gap));
   item.style.gridRowEnd = "span " + span;
 }
-function resizeAllMasonryItems(){
-  $$("#gallery .item").forEach(resizeMasonryItem);
+function redimensionarTodasAsPecas() {
+  $$("#gallery .item").forEach(redimensionarItemMasonry);
 }
-window.addEventListener("load",  resizeAllMasonryItems);
-window.addEventListener("resize", resizeAllMasonryItems);
+window.addEventListener("load",  redimensionarTodasAsPecas);
+window.addEventListener("resize", redimensionarTodasAsPecas);
 $$("#gallery img").forEach(img =>
-  img.addEventListener("load", () => resizeMasonryItem(img.closest(".item")))
+  img.addEventListener("load", () => redimensionarItemMasonry(img.closest(".item")))
 );
 // Recalcular após as fontes (evita “saltos” de legenda)
 if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => resizeAllMasonryItems());
+  document.fonts.ready.then(() => redimensionarTodasAsPecas());
 }
-requestAnimationFrame(() => resizeAllMasonryItems());
-setTimeout(resizeAllMasonryItems, 300);
+requestAnimationFrame(() => redimensionarTodasAsPecas());
+setTimeout(redimensionarTodasAsPecas, 300);
 
-// Lightbox com teclado
-const lightbox = $("#lightbox");
-const lbImg = $(".lightbox-img");
-const lbCap = $(".lightbox-cap");
-const lbClose = $(".lightbox-close");
-const lbPrev = $(".lightbox .prev");
-const lbNext = $(".lightbox .next");
-let currentIndex = -1;
-const figures = () => $$("#gallery figure.item").filter(f => f.style.display !== "none");
+// ==== Lightbox com teclado e carga sob demanda ====
+const lightbox   = $("#lightbox");
+const lbImg      = $(".lightbox-img");
+const lbCap      = $(".lightbox-cap");
+const lbClose    = $(".lightbox-close");
+const lbPrev     = $(".lightbox .prev");
+const lbNext     = $(".lightbox .next");
+let indiceAtual  = -1;
+const figurasVisiveis = () => $$("#gallery figure.item").filter(f => f.style.display !== "none");
 
-$("#gallery").addEventListener("click", e => {
-  const fig = e.target.closest("figure.item");
-  if (!fig) return;
-  openLightbox(figures().indexOf(fig));
-});
-function openLightbox(i){
-  const figs = figures();
+function abrirLightbox(i){
+  const figs = figurasVisiveis();
   if (i < 0 || i >= figs.length) return;
-  currentIndex = i;
+  indiceAtual = i;
   const fig = figs[i];
   const img = fig.querySelector("img");
-  lbImg.src = img.src;
+  const grande = img.getAttribute("data-large") || img.src;
+
+  // só “puxa” a maior quando abre
+  lbImg.src = grande;
   lbImg.alt = img.alt;
   lbCap.textContent = fig.querySelector("figcaption")?.textContent ?? "";
   lightbox.classList.add("open");
   lightbox.setAttribute("aria-hidden", "false");
+  travarScroll(true);
 }
-function closeLightbox(){
+function fecharLightbox(){
   lightbox.classList.remove("open");
   lightbox.setAttribute("aria-hidden", "true");
+  travarScroll(false);
 }
-function navLightbox(dir){
-  const figs = figures();
+function navegarLightbox(dir){
+  const figs = figurasVisiveis();
   if (figs.length === 0) return;
-  currentIndex = (currentIndex + dir + figs.length) % figs.length;
-  const fig = figs[currentIndex];
+  indiceAtual = (indiceAtual + dir + figs.length) % figs.length;
+  const fig = figs[indiceAtual];
   const img = fig.querySelector("img");
-  lbImg.src = img.src;
+  const grande = img.getAttribute("data-large") || img.src;
+  lbImg.src = grande;
   lbImg.alt = img.alt;
   lbCap.textContent = fig.querySelector("figcaption")?.textContent ?? "";
 }
-lbClose.addEventListener("click", closeLightbox);
-lbPrev.addEventListener("click", () => navLightbox(-1));
-lbNext.addEventListener("click", () => navLightbox(1));
+
+$("#gallery")?.addEventListener("click", e => {
+  const fig = e.target.closest("figure.item");
+  if (!fig) return;
+  abrirLightbox(figurasVisiveis().indexOf(fig));
+});
+
+lbClose?.addEventListener("click", fecharLightbox);
+lbPrev?.addEventListener("click", () => navegarLightbox(-1));
+lbNext?.addEventListener("click", () => navegarLightbox(1));
+
 document.addEventListener("keydown", e => {
   if (!lightbox.classList.contains("open")) return;
-  if (e.key === "Escape") closeLightbox();
-  if (e.key === "ArrowLeft") navLightbox(-1);
-  if (e.key === "ArrowRight") navLightbox(1);
+  if (e.key === "Escape") fecharLightbox();
+  if (e.key === "ArrowLeft") navegarLightbox(-1);
+  if (e.key === "ArrowRight") navegarLightbox(1);
 });
-lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+lightbox?.addEventListener("click", e => { if (e.target === lightbox) fecharLightbox(); });
