@@ -8,16 +8,18 @@
   <meta name="theme-color" content="#F5EDE3" />
 
   <!-- SEO / Social -->
+  <link rel="canonical" href="https://SEU-DOMINIO.com/" />
   <meta property="og:title" content="Portfólio — Rosemeire Tirabassi">
   <meta property="og:description" content="+30 anos de experiência: figurinos, peças sob medida e perucas artesanais.">
   <meta property="og:image" content="assets/rosemeire-portrait.jpg">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Fonts -->
+  <!-- Fonts (carregamento rápido) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"></noscript>
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
@@ -71,13 +73,19 @@
           </ul>
         </div>
         <div class="hero-illustration">
-          <!-- Imagem otimizada com srcset -->
+          <!-- Imagem otimizada com picture -->
           <figure class="portrait-card">
-            <img 
-              src="imagens/principal.jpg"
-              srcset="imagens/principal.jpg 800w, imagens/principal.jpg 1200w"
-              sizes="(max-width: 720px) 92vw, (max-width: 1100px) 50vw, 520px"
-              alt="Foto de Rosemeire Tirabassi" width="800" height="1066" />
+            <picture>
+              <source srcset="imagens/principal.jpg" type="image/avif">
+              <source srcset="imagens/principal.jpg" type="image/webp">
+              <img 
+                src="imagens/principal.jpg"
+                srcset="imagens/principal.jpg 800w, imagens/principal.jpg 1200w"
+                sizes="(max-width: 720px) 92vw, (max-width: 1100px) 50vw, 520px"
+                alt="Rosemeire Tirabassi, costureira e figurinista"
+                width="800" height="1066"
+                fetchpriority="high" decoding="async" />
+            </picture>
             <figcaption>Costureira &amp; Figurinista</figcaption>
           </figure>
         </div>
@@ -100,9 +108,9 @@
 
         <!-- Stack de fotos responsivo -->
         <div class="photo-stack" aria-hidden="true">
-          <img class="layer l1" src="imagens/principal.jpg" alt="" width="800" height="1066" loading="lazy">
-          <img class="layer l2" src="imagens/4.jpg"        alt="" width="1600" height="1200" loading="lazy">
-          <img class="layer l3" src="imagens/8.jpg"        alt="" width="1600" height="1200" loading="lazy">
+          <img class="layer l1" src="imagens/principal.jpg" alt="" width="800" height="1066" loading="lazy" decoding="async">
+          <img class="layer l2" src="imagens/4.jpg"        alt="" width="1600" height="1200" loading="lazy" decoding="async">
+          <img class="layer l3" src="imagens/8.jpg"        alt="" width="1600" height="1200" loading="lazy" decoding="async">
         </div>
       </div>
     </section>
@@ -153,133 +161,180 @@
         <div class="section-head">
           <h2>Portfólio Visual</h2>
           <div class="tabs" role="tablist" aria-label="Categorias do portfólio">
-            <button class="tab is-active" data-filter="all" role="tab" aria-selected="true">Tudo</button>
-            <button class="tab" data-filter="figurinos" role="tab" aria-selected="false">Figurinos Teatrais</button>
+            <button class="tab is-active" data-filter="all" role="tab" aria-selected="true" aria-controls="painel-todos" id="tab-todos">Tudo</button>
+            <button class="tab" data-filter="figurinos" role="tab" aria-selected="false" aria-controls="painel-figurinos" id="tab-figurinos">Figurinos Teatrais</button>
           </div>
         </div>
 
         <div class="masonry" id="gallery" aria-live="polite" aria-label="Exibindo categoria: todas">
-          <!-- 21 figuras -->
-          <!-- Gere as demais como já estão no seu projeto; mantive o padrão e o loading="lazy" -->
-          <!-- 1..7 -->
+       
           <figure class="item" data-category="figurinos">
-            <img src="imagens/1.jpg" alt="Figurino teatral 01" loading="lazy" width="1600" height="1200"
+            <img src="imagens/1.jpg" alt="Elenco com figurinos teatrais — cena 01" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/1.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 01</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/2.jpg" alt="Figurino teatral 02" loading="lazy" width="1600" height="1200"
+            <img src="imagens/2.jpg" alt="Elenco com figurinos teatrais — cena 02" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/2.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 02</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/3.jpg" alt="Figurino teatral 03" loading="lazy" width="1600" height="1200"
+            <img src="imagens/3.jpg" alt="Elenco com figurinos teatrais — cena 03" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/3.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 03</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/4.jpg" alt="Figurino teatral 04" loading="lazy" width="1600" height="1200"
+            <img src="imagens/4.jpg" alt="Elenco com figurinos teatrais — cena 04" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/4.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 04</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/5.jpg" alt="Figurino teatral 05" loading="lazy" width="1600" height="1200"
+            <img src="imagens/5.jpg" alt="Elenco com figurinos teatrais — cena 05" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/5.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 05</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/6.jpg" alt="Figurino teatral 06" loading="lazy" width="1600" height="1200"
+            <img src="imagens/6.jpg" alt="Elenco com figurinos teatrais — cena 06" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/6.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 06</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/7.jpg" alt="Figurino teatral 07" loading="lazy" width="1600" height="1200"
+            <img src="imagens/7.jpg" alt="Elenco com figurinos teatrais — cena 07" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/7.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 07</figcaption>
           </figure>
 
           <!-- 8..14 -->
           <figure class="item" data-category="figurinos">
-            <img src="imagens/8.jpg" alt="Figurino teatral 08" loading="lazy" width="1600" height="1200"
+            <img src="imagens/8.jpg" alt="Elenco com figurinos teatrais — cena 08" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/8.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 08</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/9.jpg" alt="Figurino teatral 09" loading="lazy" width="1600" height="1200"
+            <img src="imagens/9.jpg" alt="Elenco com figurinos teatrais — cena 09" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/9.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 09</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/10.jpg" alt="Figurino teatral 10" loading="lazy" width="1600" height="1200"
+            <img src="imagens/10.jpg" alt="Elenco com figurinos teatrais — cena 10" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/10.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 10</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/11.jpg" alt="Figurino teatral 11" loading="lazy" width="1600" height="1200"
+            <img src="imagens/11.jpg" alt="Elenco com figurinos teatrais — cena 11" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/11.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 11</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/12.jpg" alt="Figurino teatral 12" loading="lazy" width="1600" height="1200"
+            <img src="imagens/12.jpg" alt="Elenco com figurinos teatrais — cena 12" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/12.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 12</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/13.jpg" alt="Figurino teatral 13" loading="lazy" width="1600" height="1200"
+            <img src="imagens/13.jpg" alt="Elenco com figurinos teatrais — cena 13" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/13.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 13</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/14.jpg" alt="Figurino teatral 14" loading="lazy" width="1600" height="1200"
+            <img src="imagens/14.jpg" alt="Elenco com figurinos teatrais — cena 14" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/14.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 14</figcaption>
           </figure>
 
           <!-- 15..21 -->
           <figure class="item" data-category="figurinos">
-            <img src="imagens/15.jpg" alt="Figurino teatral 15" loading="lazy" width="1600" height="1200"
+            <img src="imagens/15.jpg" alt="Elenco com figurinos teatrais — cena 15" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/15.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 15</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/16.jpg" alt="Figurino teatral 16" loading="lazy" width="1600" height="1200"
+            <img src="imagens/16.jpg" alt="Elenco com figurinos teatrais — cena 16" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/16.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 16</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/17.jpg" alt="Figurino teatral 17" loading="lazy" width="1600" height="1200"
+            <img src="imagens/17.jpg" alt="Elenco com figurinos teatrais — cena 17" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/17.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 17</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/18.jpg" alt="Figurino teatral 18" loading="lazy" width="1600" height="1200"
+            <img src="imagens/18.jpg" alt="Elenco com figurinos teatrais — cena 18" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/18.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 18</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/19.jpg" alt="Figurino teatral 19" loading="lazy" width="1600" height="1200"
+            <img src="imagens/19.jpg" alt="Elenco com figurinos teatrais — cena 19" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/19.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 19</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/20.jpg" alt="Figurino teatral 20" loading="lazy" width="1600" height="1200"
+            <img src="imagens/20.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 20</figcaption>
           </figure>
           <figure class="item" data-category="figurinos">
-            <img src="imagens/21.jpg" alt="Figurino teatral 21" loading="lazy" width="1600" height="1200"
+            <img src="imagens/21.jpg" alt="Elenco com figurinos teatrais — cena 21" loading="lazy" decoding="async" width="1600" height="1200"
                  sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/21.jpg"/>
-            <figcaption>Figurino teatral</figcaption>
+            <figcaption>Figurino teatral 21</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/22.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 22</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/23.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 23</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/24.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 24</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/25.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 25</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/26.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 26</figcaption>
+          </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/27.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+                <figcaption>Figurino teatral 27</figcaption>
+                </figure>
+
+          </figure>
+          <figure class="item" data-category="figurinos">
+            <img src="imagens/28.jpg" alt="Elenco com figurinos teatrais — cena 20" loading="lazy" decoding="async" width="1600" height="1200"
+                 sizes="(min-width:981px) 25vw, (min-width:721px) 33vw, 50vw" data-large="imagens/20.jpg"/>
+            <figcaption>Figurino teatral 28</figcaption>
           </figure>
         </div>
       </div>
 
-      <!-- Lightbox -->
-      <div class="lightbox" id="lightbox" aria-hidden="true">
+      <!-- Lightbox acessível -->
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lb-cap" aria-hidden="true">
         <button class="lightbox-close" aria-label="Fechar visualização" type="button">&times;</button>
         <button class="nav prev" aria-label="Imagem anterior" type="button">&#10094;</button>
         <img class="lightbox-img" alt="" />
-        <p class="lightbox-cap"></p>
+        <p class="lightbox-cap" id="lb-cap"></p>
         <button class="nav next" aria-label="Próxima imagem" type="button">&#10095;</button>
       </div>
     </section>
@@ -321,16 +376,22 @@
     </div>
   </footer>
 
-  <!-- Schema -->
+  <!-- Schema (enriquecido) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Rosemeire Tirabassi",
     "jobTitle": "Costureira e Figurinista",
-    "address": { "@type": "PostalAddress", "addressLocality": "Porto Feliz", "addressRegion": "SP", "addressCountry": "BR" },
+    "telephone": "+55-15-99689-2105",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Porto Feliz",
+      "addressRegion": "SP",
+      "addressCountry": "BR"
+    },
     "sameAs": ["https://instagram.com/rosemeire_dosreis"],
-    "url": "https://example.com"
+    "url": "https://SEU-DOMINIO.com/"
   }
   </script>
 
