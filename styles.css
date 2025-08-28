@@ -48,9 +48,16 @@ h3{font-size:clamp(1.15rem, 2.2vw, 1.3rem)}
 .skip-link:focus{left:16px; top:16px; width:auto; height:auto; padding:8px 12px; background:#fff; border-radius:8px; border:1px solid #ccc}
 section[id]{ scroll-margin-top:86px; }
 
-/* Barra de progresso */
+/* Barra de progresso (usa transform p/ performance) */
 .progress{position:fixed; inset:0 0 auto 0; height:3px; z-index:1200; background:transparent}
-.progress .bar{display:block; height:100%; width:0; background:linear-gradient(90deg, #F6E27A, var(--gold), var(--gold-2))}
+.progress .bar{
+  display:block;
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg, #F6E27A, var(--gold), var(--gold-2));
+  transform-origin:0 50%;
+  transform:scaleX(0);
+}
 
 /* Header */
 .site-header{
@@ -97,10 +104,10 @@ section[id]{ scroll-margin-top:86px; }
 /* Split */
 .split{display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center}
 
-/* SOBRE: impedir “vazamento” das fotos */
+/* SOBRE */
 #sobre{overflow:hidden}
 
-/* Photo stack (controlado e responsivo) */
+/* Photo stack */
 .photo-stack{
   position:relative;
   height:clamp(320px, 42vw, 460px);
@@ -143,15 +150,38 @@ section[id]{ scroll-margin-top:86px; }
 .tab{border:1px solid rgba(0,0,0,.12); padding:8px 12px; border-radius:999px; background:#fff; cursor:pointer; font-weight:700}
 .tab.is-active{background:var(--gold); border-color:transparent; color:#2b2410}
 
-/* Masonry com grid-auto-rows */
-.masonry{display:grid; grid-template-columns:repeat(4, 1fr); grid-auto-rows:8px; gap:16px}
+/* Masonry */
+.masonry{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-auto-rows:8px;
+  gap:16px
+}
 .masonry .item{
   background:#fff; border-radius:16px; overflow:hidden;
   border:1px solid rgba(0,0,0,.08); box-shadow:0 12px 30px rgba(0,0,0,.08); padding:0;
 }
 .masonry .item, .masonry figure, figure { margin:0 }
-.masonry .item img{display:block; width:100%; height:auto; border-bottom:1px solid rgba(0,0,0,.06)}
-.masonry .item figcaption{display:block; font-size:.92rem; padding:12px 14px; color:#333; line-height:1.35}
+
+/* FIX: garantir que <picture> não colapse */
+.masonry .item picture{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* Imagens das peças */
+.masonry .item img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-bottom:1px solid rgba(0,0,0,.06)
+}
+
+/* Legenda */
+.masonry .item figcaption{
+  display:block; font-size:.92rem; padding:12px 14px; color:#333; line-height:1.35
+}
 .masonry .item:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.12); transition:.25s }
 
 /* Lightbox */
